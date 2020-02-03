@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simpleloadersample.R
 import com.example.simpleloadersample.model.ImageModel
@@ -34,10 +35,14 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView
     }
 
     fun updateData(list: List<ImageModel>) {
+
+        val diffCallback = ImageDiffCallback(this.list, list)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         this.list.clear()
         this.list.addAll(list)
 
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class ImageViewHolder(override val containerView: View?) :
@@ -46,6 +51,28 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView
             tvTitle.text = imageModel.getId()
             SimpleLoader.with(context).get(imageModel.getUrl()).into(ivImage)
         }
+    }
+
+}
+
+
+class ImageDiffCallback(private val oldList: List<ImageModel>, private val newList: List<ImageModel>):
+    DiffUtil.Callback() {
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldItemPosition == newItemPosition
+    }
+
+    override fun getOldListSize(): Int {
+       return oldList.size
+    }
+
+    override fun getNewListSize(): Int {
+        return newList.size
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldItemPosition == newItemPosition
     }
 
 }

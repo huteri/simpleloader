@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.simpleloadersample.App
 import com.example.simpleloadersample.features.base.BaseActivity
 import com.example.simpleloadersample.R
 import com.example.simpleloadersample.features.adapters.ImageListAdapter
+import com.example.simpleloadersample.util.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -39,8 +41,14 @@ class MainActivity : BaseActivity() {
         rvData.layoutManager = LinearLayoutManager(this)
         imageListAdapter = ImageListAdapter(this)
         rvData.adapter = imageListAdapter
+        rvData.addOnScrollListener(object : EndlessRecyclerViewScrollListener(rvData?.layoutManager!!) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                vm.loadMore()
+            }
 
-        vm.imageList.observe(this, Observer {
+        })
+
+        vm.imageListLiveData.observe(this, Observer {
             imageListAdapter.updateData(it)
         })
 

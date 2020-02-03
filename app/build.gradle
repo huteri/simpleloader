@@ -70,7 +70,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
     implementation project(path: ':simpleloader')
 
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.google.android.material:material:1.1.0-rc02'
 
 
 }
