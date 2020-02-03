@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simpleloadersample.R
@@ -47,9 +49,16 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView
 
     inner class ImageViewHolder(override val containerView: View?) :
         RecyclerView.ViewHolder(containerView!!), LayoutContainer {
+
         fun onBind(imageModel: ImageModel) {
-            tvTitle.text = imageModel.getId()
+
+            tvName.text = imageModel.getUserName()
+
             SimpleLoader.with(context).get(imageModel.getUrl()).into(ivImage)
+            SimpleLoader.with(context).get(imageModel.getUserImage()).into(ivProfile as ImageView)
+
+            tvLikes.text = context.resources.getQuantityString(R.plurals.likes, imageModel.getLikes(), imageModel.getLikes())
+
         }
     }
 

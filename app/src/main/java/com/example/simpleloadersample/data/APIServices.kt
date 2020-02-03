@@ -7,7 +7,7 @@ import retrofit2.http.GET
 
 interface APIServices {
 
-    @GET("/raw/icMKhEi9")
+    @GET("/raw/wgkJgazE")
     fun getImages() : Single<List<ImageResponse>>
 
 }

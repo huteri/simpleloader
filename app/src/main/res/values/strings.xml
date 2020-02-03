@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Simple Loader</string>
+
+
+    <plurals name="likes">
+        <item quantity="one" formatted="true">%d like</item>
+        <item quantity="other" formatted="true">%d likes</item>
+    </plurals>
 </resources>
