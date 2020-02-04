@@ -11,8 +11,8 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(schedulerProvider: SchedulerProvider, private val imageRepository: ImageRepository
 ) : BaseViewModel(schedulerProvider) {
-    val list = mutableListOf<ImageModel>()
-    var listOffset = 10
+    private val list = mutableListOf<ImageModel>()
+    private var listOffset = 0
 
     val imageListLiveData = MutableLiveData<List<ImageModel>>()
 
@@ -21,7 +21,6 @@ class MainViewModel @Inject constructor(schedulerProvider: SchedulerProvider, pr
     override fun onCleared() {
         compositeDisposable.dispose()
         super.onCleared()
-
     }
 
     fun loadImageList() {
@@ -30,7 +29,7 @@ class MainViewModel @Inject constructor(schedulerProvider: SchedulerProvider, pr
                 .subscribe({
                     list.clear()
                     list.addAll(it)
-                    listOffset = 10
+                    listOffset += PER_PAGE
 
                     imageListLiveData.value = list.take(listOffset)
 
@@ -40,9 +39,15 @@ class MainViewModel @Inject constructor(schedulerProvider: SchedulerProvider, pr
 
     fun loadMore() {
         if(listOffset < list.size) {
-            listOffset += 10
+            listOffset += PER_PAGE
             imageListLiveData.value = list.take(listOffset)
         }
+    }
+
+
+
+    companion object  {
+        const val PER_PAGE = 5
     }
 
 }
